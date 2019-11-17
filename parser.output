@@ -1,0 +1,770 @@
+Terminals unused in grammar
+
+   REAL_LITERAL
+   BOOL_LITERAL
+   REMOP
+   EXPOP
+   OROP
+   NOTOP
+   ARROW
+   CASE
+   ELSE
+   ENDCASE
+   ENDIF
+   IF
+   OTHERS
+   THEN
+   WHEN
+
+
+Grammar
+
+    0 $accept: function $end
+
+    1 function: function_header optional_variable body
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS type ';'
+    3                | error ';'
+
+    4 optional_variable: variable_
+    5                  | %empty
+
+    6 variable_: variable
+    7          | variable_ variable
+
+    8 variable: IDENTIFIER ':' type IS statement_
+
+    9 optional_parameters: parameter_
+   10                    | %empty
+
+   11 parameter_: parameter
+   12           | parameter_ ',' parameter
+
+   13 parameter: IDENTIFIER ':' type
+
+   14 type: INTEGER
+   15     | REAL
+   16     | BOOLEAN
+
+   17 body: BEGIN_ statement_ END ';'
+   18     | error ';'
+
+   19 statement_: statement ';'
+   20           | error ';'
+
+   21 statement: expression
+   22          | REDUCE operator reductions ENDREDUCE
+
+   23 operator: ADDOP
+   24         | MULOP
+
+   25 reductions: reductions statement_
+   26           | %empty
+
+   27 expression: expression ANDOP relation
+   28           | relation
+
+   29 relation: relation RELOP term
+   30         | term
+
+   31 term: term ADDOP factor
+   32     | factor
+
+   33 factor: factor MULOP primary
+   34       | primary
+
+   35 primary: '(' expression ')'
+   36        | INT_LITERAL
+   37        | IDENTIFIER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 35
+')' (41) 35
+',' (44) 12
+':' (58) 8 13
+';' (59) 2 3 17 18 19 20
+error (256) 3 18 20
+IDENTIFIER (258) 2 8 13 37
+INT_LITERAL (259) 36
+REAL_LITERAL (260)
+BOOL_LITERAL (261)
+ADDOP (262) 23 31
+MULOP (263) 24 33
+RELOP (264) 29
+ANDOP (265) 27
+REMOP (266)
+EXPOP (267)
+OROP (268)
+NOTOP (269)
+ARROW (270)
+BEGIN_ (271) 17
+BOOLEAN (272) 16
+END (273) 17
+ENDREDUCE (274) 22
+FUNCTION (275) 2
+INTEGER (276) 14
+IS (277) 8
+REDUCE (278) 22
+CASE (279)
+ELSE (280)
+ENDCASE (281)
+ENDIF (282)
+IF (283)
+OTHERS (284)
+REAL (285) 15
+THEN (286)
+WHEN (287)
+RETURNS (288) 2
+
+
+Nonterminals, with rules where they appear
+
+$accept (39)
+    on left: 0
+function (40)
+    on left: 1, on right: 0
+function_header (41)
+    on left: 2 3, on right: 1
+optional_variable (42)
+    on left: 4 5, on right: 1
+variable_ (43)
+    on left: 6 7, on right: 4 7
+variable (44)
+    on left: 8, on right: 6 7
+optional_parameters (45)
+    on left: 9 10, on right: 2
+parameter_ (46)
+    on left: 11 12, on right: 9 12
+parameter (47)
+    on left: 13, on right: 11 12
+type (48)
+    on left: 14 15 16, on right: 2 8 13
+body (49)
+    on left: 17 18, on right: 1
+statement_ (50)
+    on left: 19 20, on right: 8 17 25
+statement (51)
+    on left: 21 22, on right: 19
+operator (52)
+    on left: 23 24, on right: 22
+reductions (53)
+    on left: 25 26, on right: 22 25
+expression (54)
+    on left: 27 28, on right: 21 27 35
+relation (55)
+    on left: 29 30, on right: 27 28 29
+term (56)
+    on left: 31 32, on right: 29 30 31
+factor (57)
+    on left: 33 34, on right: 31 32 33
+primary (58)
+    on left: 35 36 37, on right: 33 34
+
+
+State 0
+
+    0 $accept: . function $end
+
+    error     shift, and go to state 1
+    FUNCTION  shift, and go to state 2
+
+    function         go to state 3
+    function_header  go to state 4
+
+
+State 1
+
+    3 function_header: error . ';'
+
+    ';'  shift, and go to state 5
+
+
+State 2
+
+    2 function_header: FUNCTION . IDENTIFIER optional_parameters RETURNS type ';'
+
+    IDENTIFIER  shift, and go to state 6
+
+
+State 3
+
+    0 $accept: function . $end
+
+    $end  shift, and go to state 7
+
+
+State 4
+
+    1 function: function_header . optional_variable body
+
+    IDENTIFIER  shift, and go to state 8
+
+    $default  reduce using rule 5 (optional_variable)
+
+    optional_variable  go to state 9
+    variable_          go to state 10
+    variable           go to state 11
+
+
+State 5
+
+    3 function_header: error ';' .
+
+    $default  reduce using rule 3 (function_header)
+
+
+State 6
+
+    2 function_header: FUNCTION IDENTIFIER . optional_parameters RETURNS type ';'
+
+    IDENTIFIER  shift, and go to state 12
+
+    $default  reduce using rule 10 (optional_parameters)
+
+    optional_parameters  go to state 13
+    parameter_           go to state 14
+    parameter            go to state 15
+
+
+State 7
+
+    0 $accept: function $end .
+
+    $default  accept
+
+
+State 8
+
+    8 variable: IDENTIFIER . ':' type IS statement_
+
+    ':'  shift, and go to state 16
+
+
+State 9
+
+    1 function: function_header optional_variable . body
+
+    error   shift, and go to state 17
+    BEGIN_  shift, and go to state 18
+
+    body  go to state 19
+
+
+State 10
+
+    4 optional_variable: variable_ .
+    7 variable_: variable_ . variable
+
+    IDENTIFIER  shift, and go to state 8
+
+    $default  reduce using rule 4 (optional_variable)
+
+    variable  go to state 20
+
+
+State 11
+
+    6 variable_: variable .
+
+    $default  reduce using rule 6 (variable_)
+
+
+State 12
+
+   13 parameter: IDENTIFIER . ':' type
+
+    ':'  shift, and go to state 21
+
+
+State 13
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters . RETURNS type ';'
+
+    RETURNS  shift, and go to state 22
+
+
+State 14
+
+    9 optional_parameters: parameter_ .
+   12 parameter_: parameter_ . ',' parameter
+
+    ','  shift, and go to state 23
+
+    $default  reduce using rule 9 (optional_parameters)
+
+
+State 15
+
+   11 parameter_: parameter .
+
+    $default  reduce using rule 11 (parameter_)
+
+
+State 16
+
+    8 variable: IDENTIFIER ':' . type IS statement_
+
+    BOOLEAN  shift, and go to state 24
+    INTEGER  shift, and go to state 25
+    REAL     shift, and go to state 26
+
+    type  go to state 27
+
+
+State 17
+
+   18 body: error . ';'
+
+    ';'  shift, and go to state 28
+
+
+State 18
+
+   17 body: BEGIN_ . statement_ END ';'
+
+    error        shift, and go to state 29
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    REDUCE       shift, and go to state 32
+    '('          shift, and go to state 33
+
+    statement_  go to state 34
+    statement   go to state 35
+    expression  go to state 36
+    relation    go to state 37
+    term        go to state 38
+    factor      go to state 39
+    primary     go to state 40
+
+
+State 19
+
+    1 function: function_header optional_variable body .
+
+    $default  reduce using rule 1 (function)
+
+
+State 20
+
+    7 variable_: variable_ variable .
+
+    $default  reduce using rule 7 (variable_)
+
+
+State 21
+
+   13 parameter: IDENTIFIER ':' . type
+
+    BOOLEAN  shift, and go to state 24
+    INTEGER  shift, and go to state 25
+    REAL     shift, and go to state 26
+
+    type  go to state 41
+
+
+State 22
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS . type ';'
+
+    BOOLEAN  shift, and go to state 24
+    INTEGER  shift, and go to state 25
+    REAL     shift, and go to state 26
+
+    type  go to state 42
+
+
+State 23
+
+   12 parameter_: parameter_ ',' . parameter
+
+    IDENTIFIER  shift, and go to state 12
+
+    parameter  go to state 43
+
+
+State 24
+
+   16 type: BOOLEAN .
+
+    $default  reduce using rule 16 (type)
+
+
+State 25
+
+   14 type: INTEGER .
+
+    $default  reduce using rule 14 (type)
+
+
+State 26
+
+   15 type: REAL .
+
+    $default  reduce using rule 15 (type)
+
+
+State 27
+
+    8 variable: IDENTIFIER ':' type . IS statement_
+
+    IS  shift, and go to state 44
+
+
+State 28
+
+   18 body: error ';' .
+
+    $default  reduce using rule 18 (body)
+
+
+State 29
+
+   20 statement_: error . ';'
+
+    ';'  shift, and go to state 45
+
+
+State 30
+
+   37 primary: IDENTIFIER .
+
+    $default  reduce using rule 37 (primary)
+
+
+State 31
+
+   36 primary: INT_LITERAL .
+
+    $default  reduce using rule 36 (primary)
+
+
+State 32
+
+   22 statement: REDUCE . operator reductions ENDREDUCE
+
+    ADDOP  shift, and go to state 46
+    MULOP  shift, and go to state 47
+
+    operator  go to state 48
+
+
+State 33
+
+   35 primary: '(' . expression ')'
+
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    '('          shift, and go to state 33
+
+    expression  go to state 49
+    relation    go to state 37
+    term        go to state 38
+    factor      go to state 39
+    primary     go to state 40
+
+
+State 34
+
+   17 body: BEGIN_ statement_ . END ';'
+
+    END  shift, and go to state 50
+
+
+State 35
+
+   19 statement_: statement . ';'
+
+    ';'  shift, and go to state 51
+
+
+State 36
+
+   21 statement: expression .
+   27 expression: expression . ANDOP relation
+
+    ANDOP  shift, and go to state 52
+
+    $default  reduce using rule 21 (statement)
+
+
+State 37
+
+   28 expression: relation .
+   29 relation: relation . RELOP term
+
+    RELOP  shift, and go to state 53
+
+    $default  reduce using rule 28 (expression)
+
+
+State 38
+
+   30 relation: term .
+   31 term: term . ADDOP factor
+
+    ADDOP  shift, and go to state 54
+
+    $default  reduce using rule 30 (relation)
+
+
+State 39
+
+   32 term: factor .
+   33 factor: factor . MULOP primary
+
+    MULOP  shift, and go to state 55
+
+    $default  reduce using rule 32 (term)
+
+
+State 40
+
+   34 factor: primary .
+
+    $default  reduce using rule 34 (factor)
+
+
+State 41
+
+   13 parameter: IDENTIFIER ':' type .
+
+    $default  reduce using rule 13 (parameter)
+
+
+State 42
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS type . ';'
+
+    ';'  shift, and go to state 56
+
+
+State 43
+
+   12 parameter_: parameter_ ',' parameter .
+
+    $default  reduce using rule 12 (parameter_)
+
+
+State 44
+
+    8 variable: IDENTIFIER ':' type IS . statement_
+
+    error        shift, and go to state 29
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    REDUCE       shift, and go to state 32
+    '('          shift, and go to state 33
+
+    statement_  go to state 57
+    statement   go to state 35
+    expression  go to state 36
+    relation    go to state 37
+    term        go to state 38
+    factor      go to state 39
+    primary     go to state 40
+
+
+State 45
+
+   20 statement_: error ';' .
+
+    $default  reduce using rule 20 (statement_)
+
+
+State 46
+
+   23 operator: ADDOP .
+
+    $default  reduce using rule 23 (operator)
+
+
+State 47
+
+   24 operator: MULOP .
+
+    $default  reduce using rule 24 (operator)
+
+
+State 48
+
+   22 statement: REDUCE operator . reductions ENDREDUCE
+
+    $default  reduce using rule 26 (reductions)
+
+    reductions  go to state 58
+
+
+State 49
+
+   27 expression: expression . ANDOP relation
+   35 primary: '(' expression . ')'
+
+    ANDOP  shift, and go to state 52
+    ')'    shift, and go to state 59
+
+
+State 50
+
+   17 body: BEGIN_ statement_ END . ';'
+
+    ';'  shift, and go to state 60
+
+
+State 51
+
+   19 statement_: statement ';' .
+
+    $default  reduce using rule 19 (statement_)
+
+
+State 52
+
+   27 expression: expression ANDOP . relation
+
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    '('          shift, and go to state 33
+
+    relation  go to state 61
+    term      go to state 38
+    factor    go to state 39
+    primary   go to state 40
+
+
+State 53
+
+   29 relation: relation RELOP . term
+
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    '('          shift, and go to state 33
+
+    term     go to state 62
+    factor   go to state 39
+    primary  go to state 40
+
+
+State 54
+
+   31 term: term ADDOP . factor
+
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    '('          shift, and go to state 33
+
+    factor   go to state 63
+    primary  go to state 40
+
+
+State 55
+
+   33 factor: factor MULOP . primary
+
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    '('          shift, and go to state 33
+
+    primary  go to state 64
+
+
+State 56
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS type ';' .
+
+    $default  reduce using rule 2 (function_header)
+
+
+State 57
+
+    8 variable: IDENTIFIER ':' type IS statement_ .
+
+    $default  reduce using rule 8 (variable)
+
+
+State 58
+
+   22 statement: REDUCE operator reductions . ENDREDUCE
+   25 reductions: reductions . statement_
+
+    error        shift, and go to state 29
+    IDENTIFIER   shift, and go to state 30
+    INT_LITERAL  shift, and go to state 31
+    ENDREDUCE    shift, and go to state 65
+    REDUCE       shift, and go to state 32
+    '('          shift, and go to state 33
+
+    statement_  go to state 66
+    statement   go to state 35
+    expression  go to state 36
+    relation    go to state 37
+    term        go to state 38
+    factor      go to state 39
+    primary     go to state 40
+
+
+State 59
+
+   35 primary: '(' expression ')' .
+
+    $default  reduce using rule 35 (primary)
+
+
+State 60
+
+   17 body: BEGIN_ statement_ END ';' .
+
+    $default  reduce using rule 17 (body)
+
+
+State 61
+
+   27 expression: expression ANDOP relation .
+   29 relation: relation . RELOP term
+
+    RELOP  shift, and go to state 53
+
+    $default  reduce using rule 27 (expression)
+
+
+State 62
+
+   29 relation: relation RELOP term .
+   31 term: term . ADDOP factor
+
+    ADDOP  shift, and go to state 54
+
+    $default  reduce using rule 29 (relation)
+
+
+State 63
+
+   31 term: term ADDOP factor .
+   33 factor: factor . MULOP primary
+
+    MULOP  shift, and go to state 55
+
+    $default  reduce using rule 31 (term)
+
+
+State 64
+
+   33 factor: factor MULOP primary .
+
+    $default  reduce using rule 33 (factor)
+
+
+State 65
+
+   22 statement: REDUCE operator reductions ENDREDUCE .
+
+    $default  reduce using rule 22 (statement)
+
+
+State 66
+
+   25 reductions: reductions statement_ .
+
+    $default  reduce using rule 25 (reductions)

@@ -1,0 +1,7 @@
+--Testing multiple errors
+
+function main a: integer returns real;
+begin
+	if a > c then
+		b 3.0;
+;

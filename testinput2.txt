@@ -1,0 +1,10 @@
+function testFunction returns integer;
+
+	numB: integer is 2.3;
+	numC: integer is 3;
+
+	begin
+
+		numB + numC;                                                                          
+
+	end;
