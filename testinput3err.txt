@@ -1,0 +1,10 @@
+function main a: real, b: integer returns integer;
+	c: integer is 3;
+	d: boolean is 4;
+	begin
+		reduce 
+		a + 32;
+		b;
+		d - c;
+		endif;
+	end;

@@ -1,0 +1,10 @@
+-- Reduction function
+
+function main4 returns integer;
+begin 
+	reduce +
+		3;
+		6;
+		1;
+	endreduce;
+end;

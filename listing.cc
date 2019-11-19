@@ -38,6 +38,7 @@ void nextLine()
 
 int lastLine()
 {
+	
 	printf("\r");
 	displayErrors();
 	printf("     \n");

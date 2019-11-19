@@ -28,7 +28,7 @@ void yyerror(const char* message);
 %%
 
 function:	
-	function_header optional_variable body ;
+	function_header optional_variable body;
 	
 function_header:	
 	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' |
@@ -43,7 +43,8 @@ variable_:
 	variable_ variable;
 
 variable:
-	IDENTIFIER ':' type IS statement_ ;
+	IDENTIFIER ':' type IS statement_ |
+	error ';' ;
 
 optional_parameters:
 	parameter_ |
@@ -61,28 +62,62 @@ type:
 	REAL |
 	BOOLEAN ;
 
-body:
-	BEGIN_ statement_ END ';' |
-	error ';' ;
+body: 
+	BEGIN_ statement_ END ';'|
+	BEGIN_ error END ';';
     
 statement_:
 	statement ';' |
-	error ';' ;
+	error ';';
 	
 statement:
 	expression |
-	REDUCE operator reductions ENDREDUCE ;
+	reduce_statement |
+	if_statement |
+	case_statement ;
+
+case_statement:
+	CASE expression IS optional_case OTHERS ARROW statement_ ENDCASE |
+	CASE error ENDCASE ; 
+
+if_statement:
+	IF expression THEN statement_ ELSE statement_ ENDIF |
+	IF error ENDIF ;
+
+reduce_statement:
+	REDUCE operator optional_reductions ENDREDUCE |
+	REDUCE error ENDREDUCE ;
+
+
+optional_case:
+	case_ |
+	;
+
+case_: 
+	case |
+	case_ case ;
+case:
+	WHEN INT_LITERAL ARROW statement_ ; 
 
 operator:
 	ADDOP |
 	MULOP ;
 
-reductions:
-	reductions statement_ |
+
+optional_reductions:
+	reductions |
 	;
+
+reductions:
+	statement_ |
+	reductions statement_ ;
+
+expression: 
+	expression OROP and_expression |
+	and_expression ;
 		    
-expression:
-	expression ANDOP relation |
+and_expression:
+	and_expression ANDOP relation |
 	relation ;
 
 relation:
@@ -94,12 +129,20 @@ term:
 	factor ;
       
 factor:
-	factor MULOP primary |
+	factor MULOP exponent | 
+	factor REMOP exponent |
+	exponent ;
+
+exponent:
+	primary EXPOP exponent |
 	primary ;
 
 primary:
 	'(' expression ')' |
-	INT_LITERAL | 
+	NOTOP primary |
+	INT_LITERAL |
+	REAL_LITERAL |
+	BOOL_LITERAL | 
 	IDENTIFIER ;
     
 %%

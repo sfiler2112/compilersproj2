@@ -1,0 +1,9 @@
+function main a: real returns integer;
+	b: integer is 3;
+	c: integer is 2;
+	begin
+		if c > b then
+			c - b;
+			a - c;
+		endif;
+	end;

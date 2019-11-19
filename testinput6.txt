@@ -1,0 +1,7 @@
+-- Multiple syntax errors
+function test5 a: integer b: integer returns integer;
+	c: boolean a = b ;
+begin
+	c or b > a;
+end;
+ 

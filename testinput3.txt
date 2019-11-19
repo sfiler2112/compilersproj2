@@ -1,2 +1,12 @@
-function main a: real returns integer;
-	b: integer is 3;
+-- If statement in function
+
+function main3 returns boolean;
+	a: integer is 3;
+	b: boolean is a > 0;
+begin
+	if b then 
+		a - 1;
+	else
+		a + 5;
+	endif;
+end; 

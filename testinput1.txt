@@ -1,7 +1,9 @@
---Testing multiple errors
+-- Boolean and real variable in function
 
-function main a: integer returns real;
+function main2 returns boolean;
+	a: real is 3.2;
+	b: real is 3.1;
+	c: boolean is a > b;
 begin
-	if a > c then
-		b 3.0;
-;
+	c and not b > a;
+end;
